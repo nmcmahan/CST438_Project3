@@ -12,3 +12,7 @@ This project will be an image sharing application running on django, with an and
 
 
 ### ERD:
+
+
+### Tech Stack:
+Django->SQLite->Android
