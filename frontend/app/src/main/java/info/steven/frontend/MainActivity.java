@@ -22,10 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        createAcctBtn = (Button) findViewById(R.id.createAcctbtn);
-    }
-
+        
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         login_button = findViewById(R.id.login);
