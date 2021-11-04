@@ -3,7 +3,6 @@ package info.steven.frontend;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,10 +16,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private Button login_button;
 
+    private Button createAcctBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        createAcctBtn = (Button) findViewById(R.id.createAcctbtn);
+    }
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
@@ -60,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        signUpLink.setOnClickListener(view -> loadSignupActivity(view));
+        signUpLink.setOnClickListener(view -> goToSignUpPage());
     }
 
     static boolean validate(String name, String pass) {
@@ -80,12 +84,12 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-/*
-    private void loadSignupActivity(View view) {
-        Intent intent = SignUpActivity.getIntent(getApplicationContext());
+    public void goToSignUpPage() {
+        Intent intent = new Intent(this, SignUp.class);
         startActivity(intent);
     }
 
+/*
     private void loadHomeActivity(View view, String username) {
         Intent intent = HomeActivity.getIntent(getApplicationContext());
         intent.putExtra("CURRENT_USERNAME", username);
