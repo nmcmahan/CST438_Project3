@@ -15,16 +15,11 @@ public class MainActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button login_button;
-
-    private Button createAcctBtn;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        createAcctBtn = (Button) findViewById(R.id.createAcctbtn);
-    }
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
