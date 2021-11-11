@@ -2,11 +2,8 @@ from django.db import models
 
 # Create your models here.
 class Users(models.Model):
-    username = models.CharField(max_length=200);
+    username = models.CharField(max_length=200, unique=True);
     password = models.CharField(max_length=200);
-    constraints = [
-        models.UniqueConstraint(fields=['username'], name='unique username')
-    ]
 
 
 class Items(models.Model):
