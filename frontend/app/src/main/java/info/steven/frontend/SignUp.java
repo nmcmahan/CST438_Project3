@@ -7,10 +7,20 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class SignUp extends AppCompatActivity {
 
     private EditText mUsernameField;
     private EditText mPasswordField;
+
+    private static JsonPlaceHolderAPI jsonPlaceHolderApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,9 +33,21 @@ public class SignUp extends AppCompatActivity {
         Button submitBtn = findViewById(R.id.submitBtn);
         Button homeBtn = findViewById(R.id.homeBtn);
 
+        new GsonBuilder().serializeNulls().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://cst438-project3.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
+
         submitBtn.setOnClickListener(v -> {
-            mUsernameField.getText().toString();
-            mPasswordField.getText().toString();
+            String username = mUsernameField.getText().toString();
+            String password = mPasswordField.getText().toString();
+
+            postUser(username, password);
+            goToHomePage();
         });
 
         homeBtn.setOnClickListener(view -> goToHomePage());
@@ -34,5 +56,26 @@ public class SignUp extends AppCompatActivity {
     public void goToHomePage(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void postUser(String username, String password)
+    {
+        User newuser = new User();
+
+        newuser.setUsername(username);
+        newuser.setPassword(password);
+        Call<User> call = jsonPlaceHolderApi.createUser(newuser);
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                return;
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 }
