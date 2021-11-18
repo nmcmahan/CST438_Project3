@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView getUser;
 
     private JsonPlaceHolderAPI jsonPlaceHolderApi;
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
