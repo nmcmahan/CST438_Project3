@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Project 3</string>
     <string name="sign_up_link_name">Don\'t have an account? <b><u>Create one</u></b></string>
+    <string name="logout">Logout</string>
 </resources>
