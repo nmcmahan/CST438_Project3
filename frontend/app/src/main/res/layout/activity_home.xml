@@ -11,11 +11,11 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/logout_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/logout_button"
-            android:text="@string/logout"
-            android:layout_marginStart="290dp"/>
+            android:layout_marginStart="290dp"
+            android:text="@string/logout" />
 
     </LinearLayout>
 
