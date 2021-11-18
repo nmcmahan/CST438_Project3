@@ -4,7 +4,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Users
-        fields = ['username', 'password']
+        fields = ['id', 'username', 'password']
 
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
