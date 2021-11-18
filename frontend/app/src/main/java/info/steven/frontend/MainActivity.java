@@ -11,20 +11,63 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private Button login_button;
 
-    private Button createAcctBtn;
+    private TextView getUser;
 
+    private JsonPlaceHolderAPI jsonPlaceHolderApi;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        createAcctBtn = (Button) findViewById(R.id.createAcctbtn);
-    }
+        getUser = findViewById(R.id.display_User);
+
+        //getting data from Heroku
+        Gson gson = new GsonBuilder().serializeNulls().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://cst438-project3.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
+
+        int id = 2;
+        Call<User> call = jsonPlaceHolderApi.GetUserbyId(id);
+
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                User user = response.body();
+
+                String content = "";
+
+                content = String.valueOf(user.getUsername());
+
+                getUser.setText(content);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                getUser.setText("Call Failure");
+            }
+        });
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
