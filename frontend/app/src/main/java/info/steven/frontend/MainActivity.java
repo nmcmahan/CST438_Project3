@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView getUser;
 
-    private JsonPlaceHolderAPI jsonPlaceHolderApi;
+    private static JsonPlaceHolderAPI jsonPlaceHolderApi;
 
     
     @Override
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
 
         int id = 2;
-        Call<User> call = jsonPlaceHolderApi.GetUserbyId(id);
+        Call<User> call = jsonPlaceHolderApi.getUserbyId(id);
 
 
         call.enqueue(new Callback<User>() {
@@ -79,11 +81,6 @@ public class MainActivity extends AppCompatActivity {
             String name = username.getText().toString();
             String pass = password.getText().toString();
 
-            if (name.isEmpty() && pass.isEmpty()) {
-                username.setError("This field cannot be blank");
-                password.setError("This field cannot be blank");
-            }
-
             if (name.isEmpty()) {
                 username.setError("This field cannot be blank");
             }
@@ -95,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             boolean isValid = validate(name, pass);
 
             if (isValid) {
-//                loadHomeActivity(view, username.getText().toString());
+                loadHomeActivity(view, getUserId(name));
             } else {
                 alertDialog();
                 boolean foundUser = findUser(name);
@@ -112,11 +109,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     static boolean validate(String name, String pass) {
-        return true;
+        List<User> all_users = jsonPlaceHolderApi.getAllUsers();
+
+        for(User u:all_users){
+            if ((u.getUsername()).equals(name) && (u.getPassword()).equals(pass)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
     static boolean findUser(String name) {
-        return true;
+        List<User> all_users = jsonPlaceHolderApi.getAllUsers();
+
+        for(User u:all_users){
+            if(u.getUsername().equals(name)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static int getUserId(String name) {
+        List<User> all_users = jsonPlaceHolderApi.getAllUsers();
+
+        for(User u:all_users){
+            if ((u.getUsername()).equals(name)) {
+                return u.getId();
+            }
+        }
+
+        return -1;
     }
 
     private void alertDialog() {
@@ -133,13 +158,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-/*
-    private void loadHomeActivity(View view, String username) {
+    private void loadHomeActivity(View view, int id) {
         Intent intent = HomeActivity.getIntent(getApplicationContext());
-        intent.putExtra("CURRENT_USERNAME", username);
+        intent.putExtra("CURRENT_ID", id);
         startActivity(intent);
     }
-*/
 
     public static Intent getIntent(Context context){
         return new Intent(context, MainActivity.class);
