@@ -1,18 +1,20 @@
 package info.steven.frontend;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AlertDialog;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,11 +25,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
-    private Button login_button;
 
     private TextView getUser;
 
-    private JsonPlaceHolderAPI jsonPlaceHolderApi;
+    private static JsonPlaceHolderAPI jsonPlaceHolderApi;
 
     
     @Override
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         getUser = findViewById(R.id.display_User);
 
         //getting data from Heroku
-        Gson gson = new GsonBuilder().serializeNulls().create();
+        new GsonBuilder().serializeNulls().create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://cst438-project3.herokuapp.com/")
@@ -48,75 +49,87 @@ public class MainActivity extends AppCompatActivity {
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
 
         int id = 2;
-        Call<User> call = jsonPlaceHolderApi.GetUserbyId(id);
+        Call<User> call = jsonPlaceHolderApi.getUserById(id);
 
 
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
 
                 User user = response.body();
 
-                String content = "";
+                String content;
 
+                assert user != null;
                 content = String.valueOf(user.getUsername());
 
                 getUser.setText(content);
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 getUser.setText("Call Failure");
             }
         });
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
-        login_button = findViewById(R.id.login);
+        Button login_button = findViewById(R.id.login);
         TextView signUpLink = findViewById(R.id.signUpLink);
 
         login_button.setOnClickListener(view -> {
-            String name = username.getText().toString();
-            String pass = password.getText().toString();
+            Call<List<User>> allUsersCall = jsonPlaceHolderApi.getAllUsers();
 
-            if (name.isEmpty() && pass.isEmpty()) {
-                username.setError("This field cannot be blank");
-                password.setError("This field cannot be blank");
-            }
+            allUsersCall.enqueue(new Callback<List<User>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
+                    List<User> all_users = response.body();
+                    String name = username.getText().toString();
+                    String pass = password.getText().toString();
+                    boolean isValid = false, isUserFound = false;
+                    int userId = -1;
 
-            if (name.isEmpty()) {
-                username.setError("This field cannot be blank");
-            }
+                    if (name.isEmpty()) {
+                        username.setError("This field cannot be blank");
+                    }
 
-            if (pass.isEmpty()) {
-                password.setError("This field cannot be blank");
-            }
+                    if (pass.isEmpty()) {
+                        password.setError("This field cannot be blank");
+                    }
 
-            boolean isValid = validate(name, pass);
+                    assert all_users != null;
+                    for(User u:all_users){
+                        if ((u.getUsername()).equals(name)) {
+                            if (u.getPassword().equals(pass)){
+                                isValid = true;
+                                userId = u.getId();
+                            }
 
-            if (isValid) {
-//                loadHomeActivity(view, username.getText().toString());
-            } else {
-                alertDialog();
-                boolean foundUser = findUser(name);
+                            isUserFound = true;
+                        }
+                    }
 
-                if (!foundUser) {
-                    username.setError("Your username is incorrect");
-                } else {
-                    password.setError("Your password is incorrect");
+                    if (isValid) {
+                        loadHomeActivity(userId);
+                    } else {
+                        alertDialog();
+
+                        if (!isUserFound) {
+                            username.setError("Your username is incorrect");
+                        } else {
+                            password.setError("Your password is incorrect");
+                        }
+                    }
                 }
-            }
+
+                @Override
+                public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+                    Toast.makeText(MainActivity.this,"Call Failure", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         signUpLink.setOnClickListener(view -> goToSignUpPage());
-    }
-
-    static boolean validate(String name, String pass) {
-        return true;
-    }
-
-    static boolean findUser(String name) {
-        return true;
     }
 
     private void alertDialog() {
@@ -133,13 +146,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-/*
-    private void loadHomeActivity(View view, String username) {
+    private void loadHomeActivity(int id) {
         Intent intent = HomeActivity.getIntent(getApplicationContext());
-        intent.putExtra("CURRENT_USERNAME", username);
+        intent.putExtra("CURRENT_ID", id);
         startActivity(intent);
     }
-*/
 
     public static Intent getIntent(Context context){
         return new Intent(context, MainActivity.class);
