@@ -9,10 +9,10 @@ import retrofit2.http.Path;
 public interface JsonPlaceHolderAPI {
 
     @GET("users/{id}")
-    Call<User> getUserbyId(
+    Call<User> getUserById(
             @Path("id") int id
     );
 
-    @GET("users")
-    List<User> getAllUsers();
+    @GET("users/")
+    Call<List<User>> getAllUsers();
 }

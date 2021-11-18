@@ -1,13 +1,13 @@
 package info.steven.frontend;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         //getting data from Heroku
-        Gson gson = new GsonBuilder().serializeNulls().create();
+        new GsonBuilder().serializeNulls().create();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://cst438-project3.herokuapp.com/")
@@ -34,23 +34,24 @@ public class HomeActivity extends AppCompatActivity {
         JsonPlaceHolderAPI jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
 
         int current_id = getIntent().getIntExtra("CURRENT_ID", -1);
-        Call<User> call = jsonPlaceHolderApi.getUserbyId(current_id);
+        Call<User> call = jsonPlaceHolderApi.getUserById(current_id);
 
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
 
                 User user = response.body();
 
-                String content = "";
+                String content;
 
+                assert user != null;
                 content = String.valueOf(user.getUsername());
 
                 Toast.makeText(getApplicationContext(), "Hello "+ content + "!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Call Failure", Toast.LENGTH_SHORT).show();
             }
         });
@@ -59,7 +60,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public static Intent getIntent(Context context){
-        Intent intent = new Intent(context, HomeActivity.class);
-        return intent;
+        return new Intent(context, HomeActivity.class);
     }
 }
