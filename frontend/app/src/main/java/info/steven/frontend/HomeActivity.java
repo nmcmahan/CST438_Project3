@@ -3,6 +3,7 @@ package info.steven.frontend;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Button logoutButton = findViewById(R.id.logout_button);
+        int current_id = getIntent().getIntExtra("CURRENT_ID", -1);
 
         //getting data from Heroku
         new GsonBuilder().serializeNulls().create();
@@ -32,8 +35,6 @@ public class HomeActivity extends AppCompatActivity {
                 .build();
 
         JsonPlaceHolderAPI jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
-
-        int current_id = getIntent().getIntExtra("CURRENT_ID", -1);
         Call<User> call = jsonPlaceHolderApi.getUserById(current_id);
 
         call.enqueue(new Callback<User>() {
@@ -56,7 +57,11 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
+        logoutButton.setOnClickListener(view -> {
+            Intent intent = MainActivity.getIntent(getApplicationContext());
+            startActivity(intent);
+            finish();
+        });
     }
 
     public static Intent getIntent(Context context){
