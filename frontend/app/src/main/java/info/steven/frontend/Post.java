@@ -2,19 +2,19 @@ package info.steven.frontend;
 
 public class Post {
     private int id;
-    private int user_id;
     private int likes;
-    private String title;
+    private String user_id;
+    private String name;
     private String category;
-    private String img_url;
+    private String url;
 
-    public Post(int id, int user_id, int likes, String title, String category, String img_url) {
+    public Post(int id, int likes, String user_id, String name, String category, String url) {
         this.id = id;
         this.user_id = user_id;
         this.likes = likes;
-        this.title = title;
+        this.name = name;
         this.category = category;
-        this.img_url = img_url;
+        this.url = url;
     }
 
     @Override
@@ -23,9 +23,9 @@ public class Post {
                 "id=" + id +
                 ", user_id=" + user_id +
                 ", likes=" + likes +
-                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
                 ", category='" + category + '\'' +
-                ", img_url='" + img_url + '\'' +
+                ", img_url='" + url + '\'' +
                 '}';
     }
 
@@ -37,11 +37,11 @@ public class Post {
         this.id = id;
     }
 
-    public int getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
 
@@ -53,12 +53,12 @@ public class Post {
         this.likes = likes;
     }
 
-    public String getTitle() {
-        return title;
+    public String getName() {
+        return name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCategory() {
@@ -69,11 +69,11 @@ public class Post {
         this.category = category;
     }
 
-    public String getImg_url() {
-        return img_url;
+    public String getUrl() {
+        return url;
     }
 
-    public void setImg_url(String img_url) {
-        this.img_url = img_url;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

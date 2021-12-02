@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.GsonBuilder;
 
@@ -23,7 +25,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "PostList";
-    List<Post> postList = new ArrayList<>();
+    private List<Post> postList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +35,6 @@ public class HomeActivity extends AppCompatActivity {
 
         Button logoutButton = findViewById(R.id.logout_button);
         Button addPostButton = findViewById(R.id.btn_add);
-
-//        createToast();
-
-        populatePostList();
-
-        Log.d(TAG, "onCreate: " + postList.toString());
 
         logoutButton.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
@@ -49,7 +46,46 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, AddEditPost.class);
             startActivity(intent);
         });
+
+        //getting data from Heroku
+        new GsonBuilder().serializeNulls().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://cst438-project3.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonPlaceHolderAPI jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
+
+        Call<List<Post>> callPosts = jsonPlaceHolderApi.getAllPosts();
+
+        callPosts.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
+                assert response.body() != null;
+                postList = new ArrayList<>(response.body());
+                Log.d(TAG, "onResponse: " + postList.toString());
+
+                RecyclerView recyclerView = findViewById(R.id.lv_postList);
+
+//        Setting up layout
+                recyclerView.hasFixedSize();
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(HomeActivity.this);
+                recyclerView.setLayoutManager(layoutManager);
+
+//        Setting up Adapter
+                RecyclerView.Adapter mAdapter = new RecycleViewAdapter(postList, HomeActivity.this);
+                recyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
+                Toast.makeText(HomeActivity.this,"List not populating", Toast.LENGTH_LONG).show();
+            }
+        });
     }
+
+    /*
 
     private JsonPlaceHolderAPI getAPI() {
         //getting data from Heroku
@@ -92,17 +128,21 @@ public class HomeActivity extends AppCompatActivity {
     private void populatePostList() {
         JsonPlaceHolderAPI jsonPlaceHolderApi = getAPI();
 
-        Call<List<Post>> callPosts = jsonPlaceHolderApi.getALlPosts();
+        Call<List<Post>> callPosts = jsonPlaceHolderApi.getAllPosts();
         callPosts.enqueue(new Callback<List<Post>>() {
             @Override
             public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
-                postList = response.body();
+                assert response.body() != null;
+                postList = new ArrayList<>(response.body());
+                Log.d(TAG, "onResponse: " + postList.toString());
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
-                Toast.makeText(HomeActivity.this,"Call Failure", Toast.LENGTH_LONG).show();
+                Toast.makeText(HomeActivity.this,"List not populating", Toast.LENGTH_LONG).show();
             }
         });
     }
+
+     */
 }
