@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         Button logoutButton = findViewById(R.id.logout_button);
         Button addPostButton = findViewById(R.id.btn_add);
 
-        createToast();
+//        createToast();
 
         populatePostList();
 
@@ -101,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
-                Toast.makeText(HomeActivity.this,"Call Failure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this,"Call Failure", Toast.LENGTH_LONG).show();
             }
         });
     }
