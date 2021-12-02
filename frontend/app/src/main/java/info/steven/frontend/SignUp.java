@@ -5,10 +5,16 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.ListIterator;
+
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,8 +52,22 @@ public class SignUp extends AppCompatActivity {
             String username = mUsernameField.getText().toString();
             String password = mPasswordField.getText().toString();
 
-            postUser(username, password);
-            goToHomePage();
+            boolean emptyfield = false;
+
+            if (username.isEmpty())
+            {
+                mUsernameField.setError("This field cannot be blank");
+                emptyfield = true;
+            }
+
+            if (password.isEmpty()) {
+                mPasswordField.setError("This field cannot be blank");
+                emptyfield = true;
+            }
+            if (!emptyfield)
+            {
+                postUser(username, password);
+            }
         });
 
         homeBtn.setOnClickListener(view -> goToHomePage());
@@ -64,18 +84,65 @@ public class SignUp extends AppCompatActivity {
 
         newuser.setUsername(username);
         newuser.setPassword(password);
-        Call<User> call = jsonPlaceHolderApi.createUser(newuser);
 
-        call.enqueue(new Callback<User>() {
+        final boolean[] usedUsername = {false};
+
+        // get all the users so we don't make duplicate
+        final Call<List<User>>[] call = new Call[]{jsonPlaceHolderApi.getAllUsers()};
+        call[0].enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                return;
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+
+
+                List<User> userlist = response.body();
+                ListIterator<User> userListIterator = userlist.listIterator();
+                while (userListIterator.hasNext())
+                {
+                    if (userListIterator.next().getUsername() == newuser.getUsername())
+                    {
+                        usedUsername[0] = true;
+                        mUsernameField.setError("Username already in use");
+                    }
+                }
+
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
 
             }
         });
+
+        //if no duplicate name, post it
+        if (!usedUsername[0])
+        {
+            Call<User> postCall = jsonPlaceHolderApi.createUser(newuser);
+            postCall.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+
+                }
+            });
+        }
+        //display error otherwise
+        else
+        {
+            alertDialog();
+        }
     }
+
+    private void alertDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setMessage("Your username and/or password is incorrect.");
+        dialog.setTitle("Invalid Credentials");
+        dialog.setPositiveButton("OK", (dialog1, which) -> {});
+        AlertDialog alertDialog=dialog.create();
+        alertDialog.show();
+    }
+
 }
