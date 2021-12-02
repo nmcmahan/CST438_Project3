@@ -1,6 +1,5 @@
 package info.steven.frontend;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -147,12 +146,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadHomeActivity(int id) {
-        Intent intent = HomeActivity.getIntent(getApplicationContext());
+        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         intent.putExtra("CURRENT_ID", id);
         startActivity(intent);
-    }
-
-    public static Intent getIntent(Context context){
-        return new Intent(context, MainActivity.class);
     }
 }

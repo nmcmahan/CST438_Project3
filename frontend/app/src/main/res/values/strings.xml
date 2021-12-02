@@ -6,4 +6,15 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="add_post">Add Post</string>
+    <string name="title">Title:</string>
+    <string name="category">Category:</string>
+    <string name="username_field">Username:</string>
+    <string name="image_url">Image URL:</string>
+    <string name="id">Id:</string>
+    <string name="_0">0</string>
+    <string name="title_of_post">Title of Post</string>
+    <string name="category_of_post">Category of Post</string>
+    <string name="author_of_post">Author of Post</string>
+    <string name="url_of_image">URL of Image</string>
 </resources>
