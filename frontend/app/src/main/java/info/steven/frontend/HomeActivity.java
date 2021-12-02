@@ -47,6 +47,8 @@ public class HomeActivity extends AppCompatActivity {
 
         addPostButton.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, AddEditPost.class);
+            int current_id = getIntent().getIntExtra("CURRENT_ID", 1);
+            intent.putExtra("CURRENT_ID", current_id);
             startActivity(intent);
         });
     }
@@ -66,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
     private void createToast() {
         JsonPlaceHolderAPI jsonPlaceHolderApi = getAPI();
 
-        int current_id = getIntent().getIntExtra("CURRENT_ID", -1);
+        int current_id = getIntent().getIntExtra("CURRENT_ID", 1);
         Call<User> callUser = jsonPlaceHolderApi.getUserById(current_id);
         callUser.enqueue(new Callback<User>() {
             @Override
