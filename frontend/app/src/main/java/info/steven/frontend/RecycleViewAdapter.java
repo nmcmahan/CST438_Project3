@@ -12,8 +12,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.MyViewHolder> {
 
@@ -53,6 +57,19 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+
+        //getting data from Heroku
+        new GsonBuilder().serializeNulls().create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://cst438-project3.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        JsonPlaceHolderAPI jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
+
+
+
         holder.tv_name.setText(postList.get(position).getName());
         holder.tv_likes.setText(String.valueOf(postList.get(position).getLikes()));
         holder.tv_category.setText(postList.get(position).getCategory());
@@ -63,6 +80,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount: " + postList.size());
         return postList.size();
     }
 }

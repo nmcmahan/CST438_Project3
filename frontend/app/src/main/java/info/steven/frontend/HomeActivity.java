@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "PostList";
-    private List<Post> postList;
+    private List<Post> postList = new ArrayList<>();
 
 
     @Override
@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 assert response.body() != null;
                 postList = new ArrayList<>(response.body());
-                Log.d(TAG, "onResponse: " + postList.toString());
+//                Log.d(TAG, "onResponse: " + postList.toString());
 
                 RecyclerView recyclerView = findViewById(R.id.lv_postList);
 
@@ -84,65 +84,4 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
-    /*
-
-    private JsonPlaceHolderAPI getAPI() {
-        //getting data from Heroku
-        new GsonBuilder().serializeNulls().create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://cst438-project3.herokuapp.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        return retrofit.create(JsonPlaceHolderAPI.class);
-    }
-
-    private void createToast() {
-        JsonPlaceHolderAPI jsonPlaceHolderApi = getAPI();
-
-        int current_id = getIntent().getIntExtra("CURRENT_ID", -1);
-        Call<User> callUser = jsonPlaceHolderApi.getUserById(current_id);
-        callUser.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-
-                User user = response.body();
-
-                String content;
-
-                assert user != null;
-                content = String.valueOf(user.getUsername());
-
-                Toast.makeText(getApplicationContext(), "Hello "+ content + "!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                Toast.makeText(getApplicationContext(), "Call Failure", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void populatePostList() {
-        JsonPlaceHolderAPI jsonPlaceHolderApi = getAPI();
-
-        Call<List<Post>> callPosts = jsonPlaceHolderApi.getAllPosts();
-        callPosts.enqueue(new Callback<List<Post>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
-                assert response.body() != null;
-                postList = new ArrayList<>(response.body());
-                Log.d(TAG, "onResponse: " + postList.toString());
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
-                Toast.makeText(HomeActivity.this,"List not populating", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-     */
 }
