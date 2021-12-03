@@ -2,6 +2,8 @@ package info.steven.frontend;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,5 +24,5 @@ public interface JsonPlaceHolderAPI {
     Call<User> createUser(@Body User user);
 
     @GET("items/")
-    Call<List<Post>> getALlPosts();
+    Call<List<Post>> getAllPosts();
 }
