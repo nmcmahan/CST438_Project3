@@ -20,7 +20,4 @@ public interface JsonPlaceHolderAPI {
 
     @POST("users/")
     Call<User> createUser(@Body User user);
-
-    @GET("items/")
-    Call<List<Post>> getALlPosts();
 }
