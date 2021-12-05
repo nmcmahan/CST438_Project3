@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static JsonPlaceHolderAPI jsonPlaceHolderApi;
 
+    private Button testButton;
+
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getUser = findViewById(R.id.display_User);
+
+        testButton = findViewById(R.id.test_Button);
+
+        testButton.setOnClickListener(v ->{
+            goToListItemActivity();
+        });
 
         //getting data from Heroku
         new GsonBuilder().serializeNulls().create();
@@ -142,6 +150,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToSignUpPage() {
         Intent intent = new Intent(this, SignUp.class);
+        startActivity(intent);
+    }
+
+    public void goToImageView() {
+        Intent intent = new Intent(this, ViewImageActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToListItemActivity() {
+        Intent intent = new Intent(this, ListItemActivity.class);
         startActivity(intent);
     }
 
