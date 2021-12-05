@@ -16,4 +16,4 @@ class ItemViewSet(viewsets.ModelViewSet):
     queryset = Items.objects.all()
     serializer_class = ItemSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['likes', 'category', 'user_id', 'creator']
+    filterset_fields = ['likes', 'category', 'user_id']
