@@ -11,5 +11,4 @@ class Items(models.Model):
     url = models.CharField(max_length=200);
     name = models.CharField(max_length=200);
     category = models.CharField(max_length=500);
-    description = models.CharField(max_length=500);
     likes = models.IntegerField(default=0);
