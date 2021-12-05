@@ -12,3 +12,4 @@ class Items(models.Model):
     name = models.CharField(max_length=200);
     category = models.CharField(max_length=500);
     likes = models.IntegerField(default=0);
+    creator = models.CharField(default='Admin', max_length=200);
