@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (isValid) {
-                        loadHomeActivity(userId);
+                        loadHomeActivity(userId, name);
                     } else {
                         alertDialog();
 
@@ -145,9 +145,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void loadHomeActivity(int id) {
+    private void loadHomeActivity(int id, String username) {
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         intent.putExtra("CURRENT_ID", id);
+        intent.putExtra("CURRENT_USER", username);
         startActivity(intent);
     }
 }

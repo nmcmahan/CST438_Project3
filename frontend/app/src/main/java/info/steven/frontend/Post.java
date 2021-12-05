@@ -7,13 +7,15 @@ public class Post {
     private String name;
     private String category;
     private String url;
+    private String creator;
 
-    public Post(String user_id, int likes, String name, String category, String url) {
+    public Post(String user_id, int likes, String name, String category, String url, String creator) {
         this.user_id = user_id;
         this.likes = likes;
         this.name = name;
         this.category = category;
         this.url = url;
+        this.creator = creator;
     }
 
     @Override
@@ -26,6 +28,15 @@ public class Post {
                 ", category='" + category + '\'' +
                 ", img_url='" + url + '\'' +
                 '}';
+    }
+
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public int getId() {

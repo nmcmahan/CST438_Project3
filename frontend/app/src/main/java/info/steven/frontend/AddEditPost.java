@@ -86,7 +86,8 @@ public class AddEditPost extends AppCompatActivity {
 
     }
     public void postItem(String user_id, String name, String category, String url) {
-        Post newitem = new Post(user_id, 0, name, category, url);
+        String creator = getIntent().getStringExtra("CURRENT_USER");
+        Post newitem = new Post(user_id, 0, name, category, url, creator);
         Call<Post> postCall = jsonPlaceHolderApi.createPost(newitem);
         postCall.enqueue(new Callback<Post>() {
             @Override
