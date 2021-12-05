@@ -28,7 +28,7 @@ public interface JsonPlaceHolderAPI {
     Call<User> createUser(@Body User user);
 
     @GET("items/")
-    Call<List<Post>> getALlPosts();
+    Call<List<Post>> getAllPosts();
 
     @GET("items/")
     Call<List<Post>> searchForPosts(

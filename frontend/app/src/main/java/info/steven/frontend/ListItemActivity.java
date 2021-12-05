@@ -106,7 +106,7 @@ public class ListItemActivity
 
         jsonPlaceHolderAPI = retrofit.create(JsonPlaceHolderAPI.class);
 
-        Call<List<Post>> call = jsonPlaceHolderAPI.getALlPosts();
+        Call<List<Post>> call = jsonPlaceHolderAPI.getAllPosts();
 
         LinearLayout ll = (LinearLayout)findViewById(R.id.linear_layout);
 
