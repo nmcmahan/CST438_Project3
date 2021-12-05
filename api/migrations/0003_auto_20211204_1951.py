@@ -14,10 +14,4 @@ class Migration(migrations.Migration):
             model_name='items',
             name='description',
         ),
-        migrations.AddField(
-            model_name='items',
-            name='category',
-            field=models.CharField(default='Uncategorized', max_length=500),
-            preserve_default=False,
-        ),
     ]
