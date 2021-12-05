@@ -26,7 +26,7 @@
         android:layout_marginStart="44dp"
         android:layout_marginTop="4dp"
         android:hint="Likes"
-        android:inputType="text"
+        android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_user"/>
 
@@ -64,30 +64,24 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/search_category"
+        tools:context=".ListItemActivity">
 
         <LinearLayout
             android:id="@+id/linear_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <TextView
-        android:layout_width="4dp"
-        android:layout_height="116dp"
-        android:layout_marginTop="208dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

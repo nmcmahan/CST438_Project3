@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface JsonPlaceHolderAPI {
 
@@ -29,10 +30,10 @@ public interface JsonPlaceHolderAPI {
     @GET("items/")
     Call<List<Post>> getALlPosts();
 
-    @GET("items/{user_id}/{category}/{likes}")
+    @GET("items/")
     Call<List<Post>> searchForPosts(
-            @Path("user_id") int user_id,
-            @Path("category") String category,
-            @Path("likes") int likes
+            @Query("username") String username,
+            @Query("category") String category,
+            @Query("likes") String likes
     );
 }

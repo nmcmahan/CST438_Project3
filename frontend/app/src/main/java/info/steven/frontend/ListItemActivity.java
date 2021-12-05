@@ -73,9 +73,18 @@ public class ListItemActivity
             String user = searchUser.getText().toString();
             String likes = searchLikes.getText().toString();
 
+            if (user.isEmpty())
+            {
+                user = "";
+            }
+            if (likes.isEmpty())
+            {
+                likes = "";
+            }
+
             String category = selectedCategory;
 
-            searchForItems(user, likes, category);
+            searchForItems(user, category, likes);
         });
 
         //view all items
@@ -85,8 +94,6 @@ public class ListItemActivity
             getAllItems();
         });
     }
-
-
 
     public void getAllItems()
     {
@@ -101,6 +108,10 @@ public class ListItemActivity
 
         Call<List<Post>> call = jsonPlaceHolderAPI.getALlPosts();
 
+        LinearLayout ll = (LinearLayout)findViewById(R.id.linear_layout);
+
+        ll.removeAllViews();
+
         //call to get all posts
         call.enqueue(new Callback<List<Post>>() {
             @Override
@@ -112,21 +123,20 @@ public class ListItemActivity
                 {
                     Post post = postListIterator.next();
 
-                    int userId = post.getUser_id();
-                    String title = post.getTitle();
+                    String username = post.getCreator();
+                    String title = post.getName();
                     String category = post.getCategory();
                     int likes = post.getLikes();
 
                     String content = "";
 
-                    content += "UserId: " + userId + "\n";
+                    content += "User: " + username + "\n";
                     content += "Title: " + title + "\n";
                     content += "Category: " + category + "\n";
                     content += "likes: " + likes + "\n";
                     content += "\n";
 
                     //make a new textview and add it to the linear layout
-                    LinearLayout ll = (LinearLayout)findViewById(R.id.linear_layout);
 
                     TextView newTextView = new TextView(getApplicationContext());
 
@@ -134,18 +144,19 @@ public class ListItemActivity
                     newTextView.setLayoutParams(lparams);
                     newTextView.setText(content);
                     ll.addView(newTextView);
+                    //Toast.makeText(ListItemActivity.this,"Title: " + title, Toast.LENGTH_LONG).show();
                 }
-
             }
             @Override
             public void onFailure(Call<List<Post>> call, Throwable t) {
-                Toast.makeText(ListItemActivity.this,"Call Failure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListItemActivity.this,"Call Failure " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    public void searchForItems(String user, String likes, String category)
+    public void searchForItems(String user, String category, String likes)
     {
+
         new GsonBuilder().serializeNulls().create();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -154,7 +165,47 @@ public class ListItemActivity
                 .build();
         jsonPlaceHolderAPI = retrofit.create(JsonPlaceHolderAPI.class);
 
-        Call<List<Post>> call = jsonPlaceHolderAPI.getALlPosts();
+        Call<List<Post>> call = jsonPlaceHolderAPI.searchForPosts(user, category, likes);
+
+        LinearLayout ll = (LinearLayout)findViewById(R.id.linear_layout);
+
+        ll.removeAllViews();
+
+        call.enqueue(new Callback<List<Post>>() {
+            @Override
+            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+                List<Post> posts = response.body();
+
+                for (Post post : posts)
+                {
+                    String username = post.getCreator();
+                    String title = post.getName();
+                    String category = post.getCategory();
+                    int likes = post.getLikes();
+
+                    String content = "";
+
+                    content += "User: " + username + "\n";
+                    content += "Title: " + title + "\n";
+                    content += "Category: " + category + "\n";
+                    content += "likes: " + likes + "\n";
+                    content += "\n";
+
+                    //make a new textview and add it to the linear layout
+                    TextView newTextView = new TextView(getApplicationContext());
+
+                    LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    newTextView.setLayoutParams(lparams);
+                    newTextView.setText(content);
+                    ll.addView(newTextView);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Post>> call, Throwable t) {
+                Toast.makeText(ListItemActivity.this,"Call Failure " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

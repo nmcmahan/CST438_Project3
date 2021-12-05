@@ -8,6 +8,7 @@ public class User {
 
     private int id;
 
+
     public void setUsername(String name) {username = name;}
 
     public void setPassword(String word) {password = word;}
