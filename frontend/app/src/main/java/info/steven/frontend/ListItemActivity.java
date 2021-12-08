@@ -1,5 +1,6 @@
 package info.steven.frontend;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -145,6 +146,20 @@ public class ListItemActivity
                     newTextView.setText(content);
                     ll.addView(newTextView);
                     //Toast.makeText(ListItemActivity.this,"Title: " + title, Toast.LENGTH_LONG).show();
+
+                    //Make a new button and add it to the app page
+                    Button button = new Button(getApplicationContext());
+                    button.setText("View Post?");
+                    button.setTag(content);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(ListItemActivity.this, ViewImageActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    ll.addView(button);
+
                 }
             }
             @Override

@@ -2,8 +2,8 @@ package info.steven.frontend;
 
 import java.util.List;
 
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
+//import io.reactivex.Flowable;
+//import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -29,6 +29,7 @@ public interface JsonPlaceHolderAPI {
     @POST("users/")
     Call<User> createUser(@Body User user);
 
+
     @POST("items/")
     Call<Post> createPost(@Body Post post);
 
@@ -41,4 +42,17 @@ public interface JsonPlaceHolderAPI {
             @Query("category") String category,
             @Query("likes") String likes
     );
+
+    @GET("items/")
+    Call<List<Post>> getPostsByUserId(
+            @Query("user_id") String user_id
+    );
+
+    @GET("items/")
+    Call<List<Post>> getPostsByUsername(
+            @Query("username") String username
+    );
+
+
+
 }
