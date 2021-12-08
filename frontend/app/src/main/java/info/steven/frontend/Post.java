@@ -3,22 +3,20 @@ package info.steven.frontend;
 public class Post {
     private int id;
     private String user_id;
-    private String url;
+    private int likes;
     private String name;
     private String category;
-    private int likes;
+    private String url;
     private String creator;
 
-
-
-    public Post(int id, String user_id, String img_url, String title, String category, int likes, String username) {
+    public Post(String user_id, int likes, String name, String category, String url, String creator) {
         this.user_id = user_id;
         this.id = id;
         this.likes = likes;
-        this.creator = username;
-        this.name = title;
+        this.name = name;
         this.category = category;
-        this.url = img_url;
+        this.url = url;
+        this.creator = creator;
     }
 
     @Override
@@ -32,6 +30,15 @@ public class Post {
                 ", category='" + category + '\'' +
                 ", img_url='" + url + '\'' +
                 '}';
+    }
+
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public int getId() {

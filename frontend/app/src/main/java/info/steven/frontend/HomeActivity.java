@@ -44,6 +44,10 @@ public class HomeActivity extends AppCompatActivity {
 
         addPostButton.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, AddEditPost.class);
+            int current_id = getIntent().getIntExtra("CURRENT_ID", 1);
+            String currentuser = getIntent().getStringExtra("CURRENT_USER");
+            intent.putExtra("CURRENT_ID", current_id);
+            intent.putExtra("CURRENT_USER", currentuser);
             startActivity(intent);
         });
 
@@ -59,13 +63,13 @@ public class HomeActivity extends AppCompatActivity {
 
         Call<List<Post>> callPosts = jsonPlaceHolderApi.getAllPosts();
 
-        callPosts.enqueue(new Callback<List<Post>>() {
+        int current_id = getIntent().getIntExtra("CURRENT_ID", 1);
+        Call<User> callUser = jsonPlaceHolderApi.getUserById(current_id);
+        callUser.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 assert response.body() != null;
                 postList = new ArrayList<>(response.body());
-//                Log.d(TAG, "onResponse: " + postList.toString());
-
                 RecyclerView recyclerView = findViewById(R.id.lv_postList);
 
 //        Setting up layout

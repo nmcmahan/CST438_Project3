@@ -1,4 +1,11 @@
 <resources>
+    <string-array name="categories" >
+        <item>Inspirational</item>
+        <item>Calming</item>
+        <item>Horror</item>
+        <item>Weird</item>
+        <item>Beautiful</item>
+    </string-array>
     <string name="app_name">Project 3</string>
     <string name="sign_up_link_name">Don\'t have an account? <b><u>Create one</u></b></string>
     <string name="logout">Logout</string>
@@ -17,4 +24,5 @@
     <string name="category_of_post">Category of Post</string>
     <string name="author_of_post">Author of Post</string>
     <string name="url_of_image">URL of Image</string>
+    <string name="img_url">Image url</string>
 </resources>

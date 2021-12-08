@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     if (isValid) {
-                        loadHomeActivity(userId);
+                        loadHomeActivity(userId, name);
                     } else {
                         alertDialog();
 
@@ -153,19 +153,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToImageView() {
-        Intent intent = new Intent(this, ViewImageActivity.class);
-        startActivity(intent);
-    }
-
-    public void goToListItemActivity() {
-        Intent intent = new Intent(this, ListItemActivity.class);
-        startActivity(intent);
-    }
-
-    private void loadHomeActivity(int id) {
+    private void loadHomeActivity(int id, String username) {
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         intent.putExtra("CURRENT_ID", id);
+        intent.putExtra("CURRENT_USER", username);
         startActivity(intent);
     }
 }
