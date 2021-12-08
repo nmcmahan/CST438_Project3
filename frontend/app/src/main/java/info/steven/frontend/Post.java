@@ -11,6 +11,7 @@ public class Post {
 
     public Post(String user_id, int likes, String name, String category, String url, String creator) {
         this.user_id = user_id;
+        this.id = id;
         this.likes = likes;
         this.name = name;
         this.category = category;
@@ -24,6 +25,7 @@ public class Post {
                 "id=" + id +
                 ", user_id=" + user_id +
                 ", likes=" + likes +
+                ", username=" + creator +
                 ", title='" + name + '\'' +
                 ", category='" + category + '\'' +
                 ", img_url='" + url + '\'' +
@@ -71,6 +73,14 @@ public class Post {
         this.category = category;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getName() {
         return name;
     }
@@ -79,11 +89,11 @@ public class Post {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getCreator() {
+        return creator;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }
