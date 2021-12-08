@@ -2,19 +2,23 @@ package info.steven.frontend;
 
 public class Post {
     private int id;
-    private int likes;
     private String user_id;
+    private String url;
     private String name;
     private String category;
-    private String url;
+    private int likes;
+    private String creator;
 
-    public Post(int id, int likes, String user_id, String name, String category, String url) {
-        this.id = id;
+
+
+    public Post(int id, String user_id, String img_url, String title, String category, int likes, String username) {
         this.user_id = user_id;
+        this.id = id;
         this.likes = likes;
-        this.name = name;
+        this.creator = username;
+        this.name = title;
         this.category = category;
-        this.url = url;
+        this.url = img_url;
     }
 
     @Override
@@ -23,7 +27,8 @@ public class Post {
                 "id=" + id +
                 ", user_id=" + user_id +
                 ", likes=" + likes +
-                ", name='" + name + '\'' +
+                ", username=" + creator +
+                ", title='" + name + '\'' +
                 ", category='" + category + '\'' +
                 ", img_url='" + url + '\'' +
                 '}';
@@ -53,14 +58,6 @@ public class Post {
         this.likes = likes;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -75,5 +72,21 @@ public class Post {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

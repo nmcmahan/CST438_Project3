@@ -14,10 +14,16 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".AddEditPost"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".ListItemActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ViewImageActivity"
+            android:exported="true" />
         <activity
             android:name=".HomeActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" >
