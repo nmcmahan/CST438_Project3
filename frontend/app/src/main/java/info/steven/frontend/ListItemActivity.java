@@ -1,16 +1,19 @@
 package info.steven.frontend;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.GsonBuilder;
@@ -29,6 +32,18 @@ public class ListItemActivity
         extends AppCompatActivity
         implements AdapterView.OnItemSelectedListener {
 
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    //popup data
+    private ImageView imageView;
+
+    private TextView likesView;
+    private TextView image_nameView;
+    private TextView userView;
+    private TextView category;
+
+
     private EditText searchUser;
     private EditText searchLikes;
 
@@ -39,6 +54,8 @@ public class ListItemActivity
     private Button viewAllButton;
 
     private Button searchButton;
+
+    private Button returnButton;
 
     public String selectedCategory;
 
@@ -93,6 +110,12 @@ public class ListItemActivity
         viewAllButton.setOnClickListener(v -> {
             getAllItems();
         });
+
+        returnButton = findViewById(R.id.return_Button);
+
+        returnButton.setOnClickListener(v -> {
+            goToHome();
+        });
     }
 
     public void getAllItems()
@@ -145,6 +168,40 @@ public class ListItemActivity
                     newTextView.setText(content);
                     ll.addView(newTextView);
                     //Toast.makeText(ListItemActivity.this,"Title: " + title, Toast.LENGTH_LONG).show();
+
+                    final String data = content;
+
+                    //Make a new button and add it to the app page
+                    Button button = new Button(getApplicationContext());
+                    button.setText("View Post?");
+                    button.setTag(content);
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //create pop up window
+                            dialogBuilder = new AlertDialog.Builder(ListItemActivity.this);
+                            final View contactPopupView = getLayoutInflater().inflate(R.layout.popwindow, null);
+                            //parse data
+                            String textData[] = data.split("\n");
+
+                            ImageView imageView = contactPopupView.findViewById(R.id.image);
+
+                            TextView userView = contactPopupView.findViewById(R.id.user);
+                            userView.setText(textData[0]);
+                            TextView image_nameView = contactPopupView.findViewById(R.id.image_name);
+                            image_nameView.setText(textData[1]);
+                            TextView category = contactPopupView.findViewById(R.id.category);
+                            category.setText(textData[2]);
+                            TextView likesView = contactPopupView.findViewById(R.id.likes);
+                            likesView.setText(textData[3]);
+
+                            dialogBuilder.setView(contactPopupView);
+                            dialog = dialogBuilder.create();
+                            dialog.show();
+                        }
+                    });
+                    ll.addView(button);
+
                 }
             }
             @Override
@@ -218,5 +275,14 @@ public class ListItemActivity
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
         selectedCategory = "";
+    }
+
+    private void goToHome() {
+        Intent intent = new Intent(ListItemActivity.this, HomeActivity.class);
+        int current_id = getIntent().getIntExtra("CURRENT_ID", 1);
+        String currentuser = getIntent().getStringExtra("CURRENT_USER");
+        intent.putExtra("CURRENT_ID", current_id);
+        intent.putExtra("CURRENT_USER", currentuser);
+        startActivity(intent);
     }
 }

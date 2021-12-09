@@ -25,25 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
 
-    private TextView getUser;
-
     private static JsonPlaceHolderAPI jsonPlaceHolderApi;
-
-    private Button testButton;
-
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getUser = findViewById(R.id.display_User);
 
-        testButton = findViewById(R.id.test_Button);
-
-        testButton.setOnClickListener(v ->{
-            goToListItemActivity();
-        });
 
         //getting data from Heroku
         new GsonBuilder().serializeNulls().create();
@@ -54,30 +43,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
-
-        int id = 2;
-        Call<User> call = jsonPlaceHolderApi.getUserById(id);
-
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-
-                User user = response.body();
-
-                String content;
-
-                assert user != null;
-                content = String.valueOf(user.getUsername());
-
-                getUser.setText(content);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
-                getUser.setText("Call Failure");
-            }
-        });
 
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);

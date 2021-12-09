@@ -28,7 +28,7 @@
         android:hint="Likes"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_user"/>
+        app:layout_constraintTop_toBottomOf="@+id/search_user" />
 
     <Spinner
         android:id="@+id/search_category"
@@ -61,6 +61,18 @@
         android:text="View All"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/paramater_search_Button" />
+
+    <Button
+        android:id="@+id/return_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="227dp"
+        android:layout_marginTop="132dp"
+        android:layout_marginEnd="16dp"
+        android:text="Return to Home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
