@@ -5,16 +5,14 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.ListIterator;
 
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,19 +50,19 @@ public class SignUp extends AppCompatActivity {
             String username = mUsernameField.getText().toString();
             String password = mPasswordField.getText().toString();
 
-            boolean emptyfield = false;
+            boolean emptyField = false;
 
             if (username.isEmpty())
             {
                 mUsernameField.setError("This field cannot be blank");
-                emptyfield = true;
+                emptyField = true;
             }
 
             if (password.isEmpty()) {
                 mPasswordField.setError("This field cannot be blank");
-                emptyfield = true;
+                emptyField = true;
             }
-            if (!emptyfield)
+            if (!emptyField)
             {
                 postUser(username, password);
             }
@@ -80,26 +78,24 @@ public class SignUp extends AppCompatActivity {
 
     public void postUser(String username, String password)
     {
-        User newuser = new User();
+        User newUser = new User();
 
-        newuser.setUsername(username);
-        newuser.setPassword(password);
+        newUser.setUsername(username);
+        newUser.setPassword(password);
 
         final boolean[] usedUsername = {false};
 
         // get all the users so we don't make duplicate
-        final Call<List<User>>[] call = new Call[]{jsonPlaceHolderApi.getAllUsers()};
+        final Call[] call = new Call[]{jsonPlaceHolderApi.getAllUsers()};
         call[0].enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
 
 
-                List<User> userlist = response.body();
-                ListIterator<User> userListIterator = userlist.listIterator();
-                while (userListIterator.hasNext())
-                {
-                    if (userListIterator.next().getUsername() == newuser.getUsername())
-                    {
+                List<User> userList = response.body();
+                assert userList != null;
+                for (User user : userList) {
+                    if (user.getUsername().equals(newUser.getUsername())) {
                         usedUsername[0] = true;
                         mUsernameField.setError("Username already in use");
                     }
@@ -108,7 +104,7 @@ public class SignUp extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
 
             }
         });
@@ -116,15 +112,15 @@ public class SignUp extends AppCompatActivity {
         //if no duplicate name, post it
         if (!usedUsername[0])
         {
-            Call<User> postCall = jsonPlaceHolderApi.createUser(newuser);
+            Call<User> postCall = jsonPlaceHolderApi.createUser(newUser);
             postCall.enqueue(new Callback<User>() {
                 @Override
-                public void onResponse(Call<User> call, Response<User> response) {
+                public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
 
                 }
 
                 @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
 
                 }
             });
