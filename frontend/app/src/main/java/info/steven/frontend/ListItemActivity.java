@@ -13,14 +13,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,15 +46,7 @@ public class ListItemActivity
     private EditText searchUser;
     private EditText searchLikes;
 
-    private Spinner categorySpinner;
-
     private static JsonPlaceHolderAPI jsonPlaceHolderAPI;
-
-    private Button viewAllButton;
-
-    private Button searchButton;
-
-    private Button returnButton;
 
     public String selectedCategory;
 
@@ -71,7 +62,7 @@ public class ListItemActivity
         searchLikes = findViewById(R.id.search_likes);
 
         //make the dropdown
-        categorySpinner = findViewById(R.id.search_category);
+        Spinner categorySpinner = findViewById(R.id.search_category);
 
         categorySpinner.setOnItemSelectedListener(this);
 
@@ -84,7 +75,7 @@ public class ListItemActivity
         categorySpinner.setAdapter(adapter);
 
         //parameter search
-        searchButton = findViewById(R.id.paramater_search_Button);
+        Button searchButton = findViewById(R.id.paramater_search_Button);
 
         searchButton.setOnClickListener(v -> {
             String user = searchUser.getText().toString();
@@ -105,17 +96,13 @@ public class ListItemActivity
         });
 
         //view all items
-        viewAllButton = findViewById(R.id.view_all_Button);
+        Button viewAllButton = findViewById(R.id.view_all_Button);
 
-        viewAllButton.setOnClickListener(v -> {
-            getAllItems();
-        });
+        viewAllButton.setOnClickListener(v -> getAllItems());
 
-        returnButton = findViewById(R.id.return_Button);
+        Button returnButton = findViewById(R.id.return_Button);
 
-        returnButton.setOnClickListener(v -> {
-            goToHome();
-        });
+        returnButton.setOnClickListener(v -> goToHome());
     }
 
     public void getAllItems()
@@ -131,21 +118,17 @@ public class ListItemActivity
 
         Call<List<Post>> call = jsonPlaceHolderAPI.getAllPosts();
 
-        LinearLayout ll = (LinearLayout)findViewById(R.id.linear_layout);
+        LinearLayout ll = findViewById(R.id.linear_layout);
 
         ll.removeAllViews();
 
         //call to get all posts
         call.enqueue(new Callback<List<Post>>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 List<Post> posts = response.body();
-                ListIterator<Post> postListIterator = posts.listIterator();
 
-                while(postListIterator.hasNext())
-                {
-                    Post post = postListIterator.next();
-
+                for (Post post : posts) {
                     String username = post.getCreator();
                     String title = post.getName();
                     String category = post.getCategory();
@@ -175,37 +158,34 @@ public class ListItemActivity
                     Button button = new Button(getApplicationContext());
                     button.setText("View Post?");
                     button.setTag(content);
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            //create pop up window
-                            dialogBuilder = new AlertDialog.Builder(ListItemActivity.this);
-                            final View contactPopupView = getLayoutInflater().inflate(R.layout.popwindow, null);
-                            //parse data
-                            String textData[] = data.split("\n");
+                    button.setOnClickListener(view -> {
+                        //create pop up window
+                        dialogBuilder = new AlertDialog.Builder(ListItemActivity.this);
+                        final View contactPopupView = getLayoutInflater().inflate(R.layout.popwindow, null);
+                        //parse data
+                        String[] textData = data.split("\n");
 
-                            ImageView imageView = contactPopupView.findViewById(R.id.image);
+                        ImageView imageView = contactPopupView.findViewById(R.id.image);
 
-                            TextView userView = contactPopupView.findViewById(R.id.user);
-                            userView.setText(textData[0]);
-                            TextView image_nameView = contactPopupView.findViewById(R.id.image_name);
-                            image_nameView.setText(textData[1]);
-                            TextView category = contactPopupView.findViewById(R.id.category);
-                            category.setText(textData[2]);
-                            TextView likesView = contactPopupView.findViewById(R.id.likes);
-                            likesView.setText(textData[3]);
+                        TextView userView = contactPopupView.findViewById(R.id.user);
+                        userView.setText(textData[0]);
+                        TextView image_nameView = contactPopupView.findViewById(R.id.image_name);
+                        image_nameView.setText(textData[1]);
+                        TextView category1 = contactPopupView.findViewById(R.id.category);
+                        category1.setText(textData[2]);
+                        TextView likesView = contactPopupView.findViewById(R.id.likes);
+                        likesView.setText(textData[3]);
 
-                            dialogBuilder.setView(contactPopupView);
-                            dialog = dialogBuilder.create();
-                            dialog.show();
-                        }
+                        dialogBuilder.setView(contactPopupView);
+                        dialog = dialogBuilder.create();
+                        dialog.show();
                     });
                     ll.addView(button);
 
                 }
             }
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
                 Toast.makeText(ListItemActivity.this,"Call Failure " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -224,13 +204,13 @@ public class ListItemActivity
 
         Call<List<Post>> call = jsonPlaceHolderAPI.searchForPosts(user, category, likes);
 
-        LinearLayout ll = (LinearLayout)findViewById(R.id.linear_layout);
+        LinearLayout ll = findViewById(R.id.linear_layout);
 
         ll.removeAllViews();
 
         call.enqueue(new Callback<List<Post>>() {
             @Override
-            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
+            public void onResponse(@NonNull Call<List<Post>> call, @NonNull Response<List<Post>> response) {
                 List<Post> posts = response.body();
 
                 for (Post post : posts)
@@ -259,7 +239,7 @@ public class ListItemActivity
             }
 
             @Override
-            public void onFailure(Call<List<Post>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Post>> call, @NonNull Throwable t) {
                 Toast.makeText(ListItemActivity.this,"Call Failure " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
@@ -267,9 +247,7 @@ public class ListItemActivity
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = parent.getItemAtPosition(position).toString();
-
-        selectedCategory = item;
+        selectedCategory = parent.getItemAtPosition(position).toString();
     }
 
     @Override
@@ -280,9 +258,9 @@ public class ListItemActivity
     private void goToHome() {
         Intent intent = new Intent(ListItemActivity.this, HomeActivity.class);
         int current_id = getIntent().getIntExtra("CURRENT_ID", 1);
-        String currentuser = getIntent().getStringExtra("CURRENT_USER");
+        String currentUser = getIntent().getStringExtra("CURRENT_USER");
         intent.putExtra("CURRENT_ID", current_id);
-        intent.putExtra("CURRENT_USER", currentuser);
+        intent.putExtra("CURRENT_USER", currentUser);
         startActivity(intent);
     }
 }
