@@ -55,6 +55,10 @@ public class HomeActivity extends AppCompatActivity {
         //takes to the list/search posts page
         viewPostsButton.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, ListItemActivity.class);
+            int current_id = getIntent().getIntExtra("CURRENT_ID", 1);
+            String currentuser = getIntent().getStringExtra("CURRENT_USER");
+            intent.putExtra("CURRENT_ID", current_id);
+            intent.putExtra("CURRENT_USER", currentuser);
             startActivity(intent);
         });
 
