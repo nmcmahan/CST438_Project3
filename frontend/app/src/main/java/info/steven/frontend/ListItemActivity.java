@@ -191,6 +191,7 @@ public class ListItemActivity
         });
     }
 
+
     public void searchForItems(String user, String category, String likes)
     {
 
@@ -235,6 +236,36 @@ public class ListItemActivity
                     newTextView.setLayoutParams(lparams);
                     newTextView.setText(content);
                     ll.addView(newTextView);
+
+                    final String data = content;
+
+                    //Make a new button and add it to the app page
+                    Button button = new Button(getApplicationContext());
+                    button.setText("View Post?");
+                    button.setTag(content);
+                    button.setOnClickListener(view -> {
+                        //create pop up window
+                        dialogBuilder = new AlertDialog.Builder(ListItemActivity.this);
+                        final View contactPopupView = getLayoutInflater().inflate(R.layout.popwindow, null);
+                        //parse data
+                        String[] textData = data.split("\n");
+
+                        ImageView imageView = contactPopupView.findViewById(R.id.image);
+
+                        TextView userView = contactPopupView.findViewById(R.id.user);
+                        userView.setText(textData[0]);
+                        TextView image_nameView = contactPopupView.findViewById(R.id.image_name);
+                        image_nameView.setText(textData[1]);
+                        TextView category1 = contactPopupView.findViewById(R.id.category);
+                        category1.setText(textData[2]);
+                        TextView likesView = contactPopupView.findViewById(R.id.likes);
+                        likesView.setText(textData[3]);
+
+                        dialogBuilder.setView(contactPopupView);
+                        dialog = dialogBuilder.create();
+                        dialog.show();
+                    });
+                    ll.addView(button);
                 }
             }
 
