@@ -6,8 +6,13 @@ import java.util.List;
 //import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -30,6 +35,7 @@ public interface JsonPlaceHolderAPI {
     Call<User> createUser(@Body User user);
 
 
+    //items
     @POST("items/")
     Call<Post> createPost(@Body Post post);
 
@@ -51,6 +57,12 @@ public interface JsonPlaceHolderAPI {
     @GET("items/")
     Call<List<Post>> getPostsByUsername(
             @Query("username") String username
+    );
+
+    @PUT("items/{id}/")
+    Call<Post> updateLike(
+            @Path("id") int id,
+            @Body Post updateLikes
     );
 
 
