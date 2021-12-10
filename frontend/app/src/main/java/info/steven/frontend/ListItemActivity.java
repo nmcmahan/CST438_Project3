@@ -281,6 +281,11 @@ public class ListItemActivity
                     ll.addView(newTextView);
 
                     final String data = content;
+                    final String url = post.getUrl();
+
+                    final int postId = post.getId();
+                    final int[] postLikes = {post.getLikes()};
+                    Post updateLikesPost = post;
 
                     //Make a new button and add it to the app page
                     Button button = new Button(getApplicationContext());
@@ -293,7 +298,12 @@ public class ListItemActivity
                         //parse data
                         String[] textData = data.split("\n");
 
+                        //display all of the data
                         ImageView imageView = contactPopupView.findViewById(R.id.image);
+                        imageView.getLayoutParams().height = 1000;
+                        imageView.getLayoutParams().width = 920;
+
+                        Glide.with(ListItemActivity.this).load(url).into(imageView);
 
                         TextView userView = contactPopupView.findViewById(R.id.user);
                         userView.setText(textData[0]);
@@ -303,6 +313,38 @@ public class ListItemActivity
                         category1.setText(textData[2]);
                         TextView likesView = contactPopupView.findViewById(R.id.likes);
                         likesView.setText(textData[3]);
+
+                        //create a like Button
+                        Button likeButton = contactPopupView.findViewById(R.id.like_Button);
+                        final int[] numofclicks = {0};
+
+                        likeButton.setOnClickListener(v -> {
+                            Call<Post> updateLike;
+                            numofclicks[0]++;
+                            if (numofclicks[0] % 2 == 1)
+                            {
+                                postLikes[0] = postLikes[0] + 1;
+                                updateLikesPost.setLikes(postLikes[0]);
+                                updateLike = jsonPlaceHolderAPI.updateLike(postId, updateLikesPost);
+                            }
+                            else
+                            {
+                                postLikes[0] = postLikes[0] - 1;
+                                updateLikesPost.setLikes(postLikes[0]);
+                                updateLike = jsonPlaceHolderAPI.updateLike(postId, updateLikesPost);
+                            }
+
+                            updateLike.enqueue(new Callback<Post>() {
+                                @Override
+                                public void onResponse(Call<Post> call, Response<Post> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<Post> call, Throwable t) {
+                                    Toast.makeText(ListItemActivity.this,"postId " + postId, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        });
 
                         dialogBuilder.setView(contactPopupView);
                         dialog = dialogBuilder.create();
