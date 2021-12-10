@@ -2,7 +2,6 @@ package info.steven.frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,10 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.google.gson.GsonBuilder;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,11 +92,11 @@ public class AddEditPost extends AppCompatActivity {
     }
     public void postItem(String user_id, String name, String category, String url) {
         String creator = getIntent().getStringExtra("CURRENT_USER");
-        Post newitem = new Post(user_id, 0, name, category, url, creator);
-        Call<Post> postCall = jsonPlaceHolderApi.createPost(newitem);
+        Post newItem = new Post(user_id, 0, name, category, url, creator);
+        Call<Post> postCall = jsonPlaceHolderApi.createPost(newItem);
         postCall.enqueue(new Callback<Post>() {
             @Override
-            public void onResponse(Call<Post> call, Response<Post> response) {
+            public void onResponse(@NonNull Call<Post> call, @NonNull Response<Post> response) {
                 AlertDialog.Builder dialog = new AlertDialog.Builder(AddEditPost.this);
                 dialog.setMessage("The Item has been added");
                 dialog.setTitle("POST success");
@@ -105,7 +106,7 @@ public class AddEditPost extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Post> call, Throwable t) {
+            public void onFailure(@NonNull Call<Post> call, @NonNull Throwable t) {
 
             }
         });

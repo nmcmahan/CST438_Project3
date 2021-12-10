@@ -1,7 +1,8 @@
 package info.steven.frontend;
 
+import androidx.annotation.NonNull;
+
 public class Post {
-    private int id;
     private String user_id;
     private int likes;
     private String name;
@@ -11,7 +12,6 @@ public class Post {
 
     public Post(String user_id, int likes, String name, String category, String url, String creator) {
         this.user_id = user_id;
-        this.id = id;
         this.likes = likes;
         this.name = name;
         this.category = category;
@@ -19,10 +19,10 @@ public class Post {
         this.creator = creator;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Post{" +
-                "id=" + id +
                 ", user_id=" + user_id +
                 ", likes=" + likes +
                 ", username=" + creator +
@@ -30,14 +30,6 @@ public class Post {
                 ", category='" + category + '\'' +
                 ", img_url='" + url + '\'' +
                 '}';
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUser_id() {

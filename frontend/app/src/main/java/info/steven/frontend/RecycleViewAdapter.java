@@ -66,15 +66,15 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        JsonPlaceHolderAPI jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderAPI.class);
+        retrofit.create(JsonPlaceHolderAPI.class);
 
 
 
         holder.tv_name.setText(postList.get(position).getName());
         holder.tv_likes.setText(String.valueOf(postList.get(position).getLikes()));
         holder.tv_category.setText(postList.get(position).getCategory());
-        holder.tv_username.setText(postList.get(position).getUser_id());
-        Glide.with(this.context).load(postList.get(position).getUrl()).dontAnimate().into(holder.iv_postPic);
+        holder.tv_username.setText(postList.get(position).getCreator());
+        Glide.with(this.context).load(postList.get(position).getUrl()).into(holder.iv_postPic);
         Log.d(TAG, "onBindViewHolder: " + postList.get(position).getUrl());
     }
 
