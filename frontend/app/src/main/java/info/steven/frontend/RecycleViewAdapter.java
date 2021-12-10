@@ -74,7 +74,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         holder.tv_likes.setText(String.valueOf(postList.get(position).getLikes()));
         holder.tv_category.setText(postList.get(position).getCategory());
         holder.tv_username.setText(postList.get(position).getUser_id());
-        Glide.with(this.context).load(postList.get(position).getUrl()).into(holder.iv_postPic);
+        Glide.with(this.context).load(postList.get(position).getUrl()).dontAnimate().into(holder.iv_postPic);
         Log.d(TAG, "onBindViewHolder: " + postList.get(position).getUrl());
     }
 

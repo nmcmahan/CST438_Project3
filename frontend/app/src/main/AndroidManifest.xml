@@ -26,6 +26,8 @@
             android:exported="true" />
         <activity android:name=".Pop"
             android:theme="@style/AppTheme.PopUpTheme"/>
+        <activity android:name=".DeleteAccount"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true" >
