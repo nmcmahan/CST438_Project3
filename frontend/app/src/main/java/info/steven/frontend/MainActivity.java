@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         Button login_button = findViewById(R.id.login);
         TextView signUpLink = findViewById(R.id.signUpLink);
+        TextView deleteLink = findViewById(R.id.deleteTextView);
 
         login_button.setOnClickListener(view -> {
             Call<List<User>> allUsersCall = jsonPlaceHolderApi.getAllUsers();
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         signUpLink.setOnClickListener(view -> goToSignUpPage());
+        deleteLink.setOnClickListener(view -> goToDeletePage());
     }
 
     private void alertDialog() {
@@ -113,6 +115,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToSignUpPage() {
         Intent intent = new Intent(this, SignUp.class);
+        startActivity(intent);
+    }
+
+    public void goToDeletePage() {
+        Intent intent = new Intent(this, DeleteAccount.class);
         startActivity(intent);
     }
 
