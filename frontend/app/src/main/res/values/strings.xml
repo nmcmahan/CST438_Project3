@@ -25,4 +25,10 @@
     <string name="author_of_post">Author of Post</string>
     <string name="url_of_image">URL of Image</string>
     <string name="img_url">Image url</string>
+    <string name="button">Cancel</string>
+    <string name="textview">Delete Account?</string>
+    <string name="name">username</string>
+    <string name="DeleteAccountBtn">Delete Account</string>
+    <string name="confirm_password">confirm Password</string>
+    <string name="deleteAccText">Want to delete your account? <b><u>Click Here</u></b></string>
 </resources>

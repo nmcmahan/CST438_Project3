@@ -8,6 +8,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -26,9 +27,9 @@ public interface JsonPlaceHolderAPI {
     @GET("users/")
     Call<List<User>> getAllUsers();
 
-    @GET("users/{username}")
-    Call<User> getUserByName(
-            @Path("username") String username
+    @GET("users/")
+    Call<List<User>> getUserByName(
+            @Query("username") String username
     );
 
     @POST("users/")
@@ -65,6 +66,8 @@ public interface JsonPlaceHolderAPI {
             @Body Post updateLikes
     );
 
-
-
+    @DELETE("users/{id}/")
+    Call<User> deleteUserById(
+            @Path("id") int id
+    );
 }
