@@ -3,6 +3,7 @@ package info.steven.frontend;
 import androidx.annotation.NonNull;
 
 public class Post {
+    private int id;
     private String user_id;
     private int likes;
     private String name;
@@ -70,6 +71,14 @@ public class Post {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCreator() {
